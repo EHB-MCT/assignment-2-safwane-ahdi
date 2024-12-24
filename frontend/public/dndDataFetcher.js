@@ -16,6 +16,29 @@ function populateDropdown(endpoint, dropdownId) {
         .catch(error => console.error(`Error fetching ${endpoint}:`, error));
 }
 
+function populateBackgrounds() {
+    fetch('backgrounds.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const backgroundDropdown = document.getElementById('background');
+            data.forEach(background => {
+                const option = document.createElement('option');
+                option.value = background.index;
+                option.textContent = background.name;
+                backgroundDropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching backgrounds:', error));
+}
+
+
+document.addEventListener('DOMContentLoaded', populateBackgrounds);
+
 document.addEventListener('DOMContentLoaded', () => {
     populateDropdown('races', 'race');
     populateDropdown('classes', 'class');
