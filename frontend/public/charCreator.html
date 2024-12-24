@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/frontend/public/dndDataFetcher.js"></script>
+    <script src="dndDataFetcher.js" type="module" defer></script>
     <title>Character Submission Form</title>
+    <style>
+        .background-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .background-card.selected {
+            border-color: #007bff;
+            background-color: #e9f5ff;
+        }
+    </style>
 </head>
 <body>
     <h1>Character Submission Form</h1>
@@ -52,15 +65,12 @@
             <option value="Chaotic Evil">Chaotic Evil</option>
         </select><br><br>
 
-        <!-- Feats -->
-        <label for="feats">Feats:</label>
-        <textarea id="feats" name="feats" placeholder="E.g., Lucky, Observant"></textarea><br><br>
-
         <!-- Skills -->
         <label for="skills">Skills:</label>
         <select id="skills" name="skills" multiple>
             <option value="">Select skills</option>
-        </select><br><br>
+        </select>
+        <p id="skill-count"></p><br>
 
         <!-- Weapons -->
         <label for="weapons">Weapons:</label>
@@ -80,31 +90,43 @@
             <option value="">Select languages</option>
         </select><br><br>
 
-        <!-- Passive Perception -->
-        <label for="passive-perception">Passive Perception:</label>
-        <input type="number" id="passive-perception" name="passivePerception" min="0" required><br><br>
+        <!-- Point Buy or Dice Roll -->
+        <h2>Choose Stat Generation Method</h2>
+        <button id="point-buy-btn" type="button">Point Buy</button>
+        <button id="dice-roll-btn" type="button">Dice Roll</button>
 
-        <!-- Point Buy System for Stats -->
-        <h2>Assign Your Stats (Point Buy System)</h2>
-        <p>You have 27 points to assign to the following stats. Minimum: 8, Maximum: 15 (before racial bonuses).</p>
+        <div id="point-buy-container" style="display: none;">
+            <h3>Point Buy</h3>
+            <label for="str">Strength:</label>
+            <input type="number" id="str" value="8" min="8" max="15"><br>
+            <label for="dex">Dexterity:</label>
+            <input type="number" id="dex" value="8" min="8" max="15"><br>
+            <label for="con">Constitution:</label>
+            <input type="number" id="con" value="8" min="8" max="15"><br>
+            <label for="int">Intelligence:</label>
+            <input type="number" id="int" value="8" min="8" max="15"><br>
+            <label for="wis">Wisdom:</label>
+            <input type="number" id="wis" value="8" min="8" max="15"><br>
+            <label for="cha">Charisma:</label>
+            <input type="number" id="cha" value="8" min="8" max="15"><br>
+            <button id="apply-point-buy" type="button">Apply</button>
+        </div>
 
-        <label for="strength">Strength:</label>
-        <input type="number" id="strength" name="strength" min="8" max="15" required><br><br>
+        <div id="dice-roll-container" style="display: none;">
+            <h3>Dice Roll</h3>
+            <p>Rolls will generate automatically.</p>
+            <button id="roll-dice-btn" type="button">Roll</button>
+            <div id="rolled-stats"></div>
+        </div>
 
-        <label for="dexterity">Dexterity:</label>
-        <input type="number" id="dexterity" name="dexterity" min="8" max="15" required><br><br>
+        <!-- Background List -->
+        <h2>Background Selection</h2>
+        <div id="background-list"></div>
+        <input type="hidden" id="selected-background" name="background">
 
-        <label for="constitution">Constitution:</label>
-        <input type="number" id="constitution" name="constitution" min="8" max="15" required><br><br>
-
-        <label for="intelligence">Intelligence:</label>
-        <input type="number" id="intelligence" name="intelligence" min="8" max="15" required><br><br>
-
-        <label for="wisdom">Wisdom:</label>
-        <input type="number" id="wisdom" name="wisdom" min="8" max="15" required><br><br>
-
-        <label for="charisma">Charisma:</label>
-        <input type="number" id="charisma" name="charisma" min="8" max="15" required><br><br>
+        <!-- Feats -->
+        <h2>Choose a Feat</h2>
+        <div id="feats-container"></div>
 
         <button type="submit">Submit Character</button>
     </form>
