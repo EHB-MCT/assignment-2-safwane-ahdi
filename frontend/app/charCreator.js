@@ -1,4 +1,4 @@
-let racesData, classesData;
+let racesData, classesData, selectedSkills = [];
 
 // Load Races
 fetch('races.json')
@@ -21,6 +21,91 @@ fetch('classes.json')
 //##########################################
 //##########################################
 //##########################################
+
+// Update Skills Dropdown Based on Selected Class
+document.getElementById("class-select").addEventListener("change", () => {
+    const selectedClass = document.getElementById("class-select").value;
+    if (selectedClass) {
+        populateSkills(selectedClass);
+    } else {
+        document.getElementById("skills-container").innerHTML = ""; // Clear skills section
+    }
+});
+
+// Populate Skills Based on Selected Class
+function populateSkills(className) {
+    const classData = classesData[className];
+    const skillContainer = document.getElementById("skills-container");
+
+    if (classData && classData.skills) {
+        skillContainer.innerHTML = `<p>Select ${classData.skillCount} skills:</p>`;
+        const availableSkills = classData.skills;
+
+        availableSkills.forEach(skill => {
+            const skillElement = document.createElement("label");
+            skillElement.innerHTML = `
+                <input type="checkbox" value="${skill}" onchange="updateSelectedSkills('${className}')">
+                ${skill}
+            `;
+            skillContainer.appendChild(skillElement);
+        });
+    }
+}
+
+// Update Selected Skills
+function updateSelectedSkills(className) {
+    const classData = classesData[className];
+    const checkboxes = document.querySelectorAll("#skills-container input[type='checkbox']");
+    selectedSkills = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+
+    if (selectedSkills.length > classData.skillCount) {
+        alert(`You can only choose ${classData.skillCount} skills.`);
+        checkboxes.forEach(checkbox => {
+            if (!selectedSkills.includes(checkbox.value)) {
+                checkbox.checked = false;
+            }
+        });
+        selectedSkills = selectedSkills.slice(0, classData.skillCount);
+    }
+}
+
+// Attach updateSelectedSkills to the global window object
+window.updateSelectedSkills = function (className) {
+    const classData = classesData[className];
+    const checkboxes = document.querySelectorAll("#skills-container input[type='checkbox']");
+    selectedSkills = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+
+    if (selectedSkills.length > classData.skillCount) {
+        alert(`You can only choose ${classData.skillCount} skills.`);
+        checkboxes.forEach(checkbox => {
+            if (!selectedSkills.includes(checkbox.value)) {
+                checkbox.checked = false;
+            }
+        });
+        selectedSkills = selectedSkills.slice(0, classData.skillCount);
+    }
+};
+
+
+// Generate Character (Partial Implementation)
+function generateCharacter() {
+    const selectedClass = document.getElementById("class-select").value;
+
+    const character = {
+        class: selectedClass,
+        skills: selectedSkills,
+    };
+
+    document.getElementById("character-details").textContent = JSON.stringify(character, null, 2);
+    document.getElementById("character-summary").style.display = "block";
+}
+
+document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
+
 
 document.addEventListener("DOMContentLoaded", () => {
     // Fetch Races and Populate Race Dropdown

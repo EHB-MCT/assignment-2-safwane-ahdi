@@ -66,67 +66,21 @@
                 <button onclick="adjustScore('charisma', -1)">-</button>
             </div>
         </div>
+
+        <div id="skills-selection">
+            <h2>Skill Selection</h2>
+            <div id="skills-container"></div>
+        </div>
+        
         
 
-        <button onclick="generateCharacter()">Generate Character</button>
+        <button id="generate-character-button">Generate Character</button>
+
     </div>
 
     <div id="character-summary" style="display:none;">
         <h2>Character Summary</h2>
         <p id="character-details"></p>
     </div>
-
-    <script>
-        const races = {
-            dwarf: {
-                traits: "Constitution +2, Darkvision, Dwarven Resilience",
-                speed: 25,
-                size: "Medium",
-            },
-            elf: {
-                traits: "Dexterity +2, Darkvision, Keen Senses, Fey Ancestry",
-                speed: 30,
-                size: "Medium",
-            },
-            human: {
-                traits: "All Ability Scores +1",
-                speed: 30,
-                size: "Medium",
-            },
-            halfling: {
-                traits: "Dexterity +2, Lucky, Brave, Halfling Nimbleness",
-                speed: 25,
-                size: "Small",
-            },
-        };
-
-        function generateCharacter() {
-            const race = document.getElementById("race-select").value;
-            const charClass = document.getElementById("class-select").value;
-            const abilities = {
-                strength: document.getElementById("strength").value,
-                dexterity: document.getElementById("dexterity").value,
-                constitution: document.getElementById("constitution").value,
-                intelligence: document.getElementById("intelligence").value,
-                wisdom: document.getElementById("wisdom").value,
-                charisma: document.getElementById("charisma").value,
-            };
-
-            const raceDetails = races[race];
-            const details = `
-                Race: ${race.charAt(0).toUpperCase() + race.slice(1)}<br>
-                Traits: ${raceDetails.traits}<br>
-                Speed: ${raceDetails.speed} feet<br>
-                Size: ${raceDetails.size}<br>
-                Class: ${charClass.charAt(0).toUpperCase() + charClass.slice(1)}<br>
-                Strength: ${abilities.strength}, Dexterity: ${abilities.dexterity}, Constitution: ${abilities.constitution},<br>
-                Intelligence: ${abilities.intelligence}, Wisdom: ${abilities.wisdom}, Charisma: ${abilities.charisma}
-            `;
-
-            document.getElementById("character-details").innerHTML = details;
-            document.getElementById("creator").style.display = "none";
-            document.getElementById("character-summary").style.display = "block";
-        }
-    </script>
 </body>
 </html>
