@@ -237,3 +237,31 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('class').addEventListener('change', updateSkills);
     document.getElementById('background').addEventListener('change', updateSkills);
 });
+
+document.getElementById('proficiencies').addEventListener('change', (e) => {
+    const selectedProficiencies = Array.from(e.target.selectedOptions).map(option => option.value);
+    character.proficiencies = selectedProficiencies;
+    character.calculateSkills();
+    updateSkillModifiersUI();
+});
+
+document.getElementById('expertise').addEventListener('change', (e) => {
+    const selectedExpertise = Array.from(e.target.selectedOptions).map(option => option.value);
+    character.expertise = selectedExpertise;
+    character.calculateSkills();
+    updateSkillModifiersUI();
+});
+
+// Update the skill modifiers display
+function updateSkillModifiersUI() {
+    Object.keys(character.skills).forEach((ability) => {
+        Object.keys(character.skills[ability]).forEach((skill) => {
+            const skillId = `${skill.toLowerCase().replace(/_/g, '-')}-modifier`;
+            const skillElement = document.getElementById(skillId);
+            if (skillElement) {
+                skillElement.textContent = character.skills[ability][skill];
+            }
+        });
+    });
+}
+

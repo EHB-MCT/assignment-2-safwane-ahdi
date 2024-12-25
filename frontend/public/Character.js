@@ -36,29 +36,48 @@ export default class Character {
             WIS: { Animal_Handling: 0, Insight: 0, Medicine: 0, Perception: 0, Survival: 0 },
             CHA: { Deception: 0, Intimidation: 0, Performance: 0, Persuasion: 0 },
         };
+        this.proficiencies = [];
+        this.expertise = []; 
+        this.proficiencyBonus = 2; // Default starting proficiency bonus
     }
+    
 
     // Populate stats using either dice rolls or another input method
     populateStats(diceResults) {
         Object.keys(this.stats).forEach((key, index) => {
             this.stats[key] = diceResults[index];
         });
+        this.applyRaceModifiers();
     }
 
     // Choose the stat generation method
-    chooseStatGenerationMethod(method) {
-        if (method === 'point-buy') {
-            this.stats = this.initializePointBuy();
+    chooseStatGenerationMethod(method, inputStats = null) {
+        if (method === 'point-buy' && inputStats) {
+            this.stats = { ...inputStats };
         } else if (method === 'dice-roll') {
             this.stats = this.rollStats();
         } else {
-            throw new Error('Invalid stat generation method.');
+            throw new Error('Invalid stat generation method or missing input.');
         }
     }
 
     // Initialize point buy stats
     initializePointBuy() {
-        return { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 };
+        const baseStats = { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 };
+        let remainingPoints = 27;
+    
+        return {
+            baseStats,
+            adjustStat: (stat, increment) => {
+                const cost = increment > baseStats[stat] ? 1 : -1;
+                if (remainingPoints - cost >= 0) {
+                    baseStats[stat] += increment;
+                    remainingPoints -= cost;
+                } else {
+                    throw new Error('Not enough points remaining.');
+                }
+            },
+        };
     }
 
     // Roll stats using the 4d6, drop the lowest method
@@ -164,25 +183,45 @@ export default class Character {
 
     // Calculate skills
     calculateSkills() {
-        this.skills.STR.Athletics += this.savingThrows.STR;
-        this.skills.DEX.Acrobatics += this.savingThrows.DEX;
-        this.skills.DEX.Sleight_of_Hand += this.savingThrows.DEX;
-        this.skills.DEX.Stealth += this.savingThrows.DEX;
-        this.skills.INT.Arcana += this.savingThrows.INT;
-        this.skills.INT.History += this.savingThrows.INT;
-        this.skills.INT.Investigation += this.savingThrows.INT;
-        this.skills.INT.Nature += this.savingThrows.INT;
-        this.skills.INT.Religion += this.savingThrows.INT;
-        this.skills.WIS.Animal_Handling += this.savingThrows.WIS;
-        this.skills.WIS.Insight += this.savingThrows.WIS;
-        this.skills.WIS.Medicine += this.savingThrows.WIS;
-        this.skills.WIS.Perception += this.savingThrows.WIS;
-        this.skills.WIS.Survival += this.savingThrows.WIS;
-        this.skills.CHA.Deception += this.savingThrows.CHA;
-        this.skills.CHA.Intimidation += this.savingThrows.CHA;
-        this.skills.CHA.Performance += this.savingThrows.CHA;
-        this.skills.CHA.Persuasion += this.savingThrows.CHA;
+        Object.keys(this.skills).forEach((ability) => {
+            Object.keys(this.skills[ability]).forEach((skill) => {
+                let baseModifier = Math.floor((this.stats[ability] - 10) / 2);
+                let totalModifier = baseModifier;
+    
+                if (this.proficiencies.includes(skill)) {
+                    totalModifier += this.proficiencyBonus;
+                }
+    
+                if (this.expertise.includes(skill)) {
+                    totalModifier += this.proficiencyBonus;
+                }
+    
+                this.skills[ability][skill] = totalModifier;
+            });
+        });
     }
+
+    addProficiency(skill) {
+        if (!this.proficiencies.includes(skill)) {
+            this.proficiencies.push(skill);
+        }
+        this.calculateSkills();
+    }
+
+    updateProficiencyBonus(level) {
+        this.proficiencyBonus = Math.floor((level - 1) / 4) + 2; // Proficiency bonus increases at levels 5, 9, 13, and 17
+        this.calculateSkills();
+    }
+    
+    
+    addExpertise(skill) {
+        if (!this.expertise.includes(skill)) {
+            this.expertise.push(skill);
+        }
+        this.calculateSkills();
+    }
+    
+    
 
     // Add feat and apply modifiers
     addFeat(feat) {
@@ -194,7 +233,30 @@ export default class Character {
         }
     }
 
-    // Describe the character
+    getSkillDescriptions(skill) {
+        const skillDescriptions = {
+            Athletics: "Use your Strength to perform physical activities like climbing, jumping, and swimming.",
+            Acrobatics: "Balance, tumble, and other dexterous movements.",
+            Sleight_of_Hand: "Steal items or perform tricks using your dexterity.",
+            Stealth: "Move silently or hide.",
+            Arcana: "Recall knowledge about magic and its history.",
+            History: "Recall knowledge about past events, civilizations, and lore.",
+            Investigation: "Analyze clues and solve puzzles.",
+            Nature: "Recall knowledge about natural environments, animals, and plants.",
+            Religion: "Recall knowledge about deities, religions, and rituals.",
+            Animal_Handling: "Calm or control animals.",
+            Insight: "Discern a creature's intentions, emotions, or lies.",
+            Medicine: "Diagnose and treat wounds or illnesses.",
+            Perception: "Spot hidden creatures or objects.",
+            Survival: "Track creatures, find food, or navigate the wilderness.",
+            Deception: "Lie convincingly or mislead others.",
+            Intimidation: "Coerce others through threats or force.",
+            Performance: "Entertain an audience with your talent.",
+            Persuasion: "Convince others through charm or logic.",
+        };
+        return skillDescriptions[skill] || "No description available.";
+    }
+    
     describe() {
         return `The character ${this.name} is a ${this.sex} ${this.race} ${this.class} and has ${this.hp} HP.`;
     }

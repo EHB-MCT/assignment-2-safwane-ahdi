@@ -66,11 +66,83 @@
         </select><br><br>
 
         <!-- Skills -->
-        <label for="skills">Skills:</label>
-        <select id="skills" name="skills" multiple>
-            <option value="">Select skills</option>
-        </select>
-        <p id="skill-count"></p><br>
+        <h2>Skill Selection</h2>
+
+<!-- Proficiency Selection -->
+<div id="proficiency-selection">
+    <label for="proficiencies">Choose Skill Proficiencies:</label>
+    <select id="proficiencies" name="proficiencies" multiple>
+        <option value="Athletics">Athletics</option>
+        <option value="Acrobatics">Acrobatics</option>
+        <option value="Sleight_of_Hand">Sleight of Hand</option>
+        <option value="Stealth">Stealth</option>
+        <option value="Arcana">Arcana</option>
+        <option value="History">History</option>
+        <option value="Investigation">Investigation</option>
+        <option value="Nature">Nature</option>
+        <option value="Religion">Religion</option>
+        <option value="Animal_Handling">Animal Handling</option>
+        <option value="Insight">Insight</option>
+        <option value="Medicine">Medicine</option>
+        <option value="Perception">Perception</option>
+        <option value="Survival">Survival</option>
+        <option value="Deception">Deception</option>
+        <option value="Intimidation">Intimidation</option>
+        <option value="Performance">Performance</option>
+        <option value="Persuasion">Persuasion</option>
+    </select>
+</div>
+
+<!-- Expertise Selection -->
+<div id="expertise-selection">
+    <label for="expertise">Choose Skills for Expertise (if applicable):</label>
+    <select id="expertise" name="expertise" multiple>
+        <option value="Athletics">Athletics</option>
+        <option value="Acrobatics">Acrobatics</option>
+        <option value="Sleight_of_Hand">Sleight of Hand</option>
+        <option value="Stealth">Stealth</option>
+        <option value="Arcana">Arcana</option>
+        <option value="History">History</option>
+        <option value="Investigation">Investigation</option>
+        <option value="Nature">Nature</option>
+        <option value="Religion">Religion</option>
+        <option value="Animal_Handling">Animal Handling</option>
+        <option value="Insight">Insight</option>
+        <option value="Medicine">Medicine</option>
+        <option value="Perception">Perception</option>
+        <option value="Survival">Survival</option>
+        <option value="Deception">Deception</option>
+        <option value="Intimidation">Intimidation</option>
+        <option value="Performance">Performance</option>
+        <option value="Persuasion">Persuasion</option>
+    </select>
+</div>
+
+<!-- Display Calculated Skills -->
+<h3>Calculated Skills</h3>
+<div id="calculated-skills">
+    <ul>
+        <li>Athletics: <span id="athletics-modifier">0</span></li>
+        <li>Acrobatics: <span id="acrobatics-modifier">0</span></li>
+        <li>Sleight of Hand: <span id="sleight-of-hand-modifier">0</span></li>
+        <li>Stealth: <span id="stealth-modifier">0</span></li>
+        <li>Arcana: <span id="arcana-modifier">0</span></li>
+        <li>History: <span id="history-modifier">0</span></li>
+        <li>Investigation: <span id="investigation-modifier">0</span></li>
+        <li>Nature: <span id="nature-modifier">0</span></li>
+        <li>Religion: <span id="religion-modifier">0</span></li>
+        <li>Animal Handling: <span id="animal-handling-modifier">0</span></li>
+        <li>Insight: <span id="insight-modifier">0</span></li>
+        <li>Medicine: <span id="medicine-modifier">0</span></li>
+        <li>Perception: <span id="perception-modifier">0</span></li>
+        <li>Survival: <span id="survival-modifier">0</span></li>
+        <li>Deception: <span id="deception-modifier">0</span></li>
+        <li>Intimidation: <span id="intimidation-modifier">0</span></li>
+        <li>Performance: <span id="performance-modifier">0</span></li>
+        <li>Persuasion: <span id="persuasion-modifier">0</span></li>
+    </ul>
+</div>
+
 
         <!-- Weapons -->
         <label for="weapons">Weapons:</label>
