@@ -1,0 +1,89 @@
+{
+    "equipmentPacks": {
+      "burglarPack": {
+        "price": 16,
+        "contents": [
+          "backpack",
+          "bag of 1,000 ball bearings",
+          "10 feet of string",
+          "bell",
+          "5 candles",
+          "crowbar",
+          "hammer",
+          "10 pitons",
+          "hooded lantern",
+          "2 flasks of oil",
+          "5 days rations",
+          "tinderbox",
+          "waterskin",
+          "50 feet of hempen rope"
+        ]
+      },
+      "diplomatPack": {
+        "price": 39,
+        "contents": [
+          "chest",
+          "2 cases for maps and scrolls",
+          "set of fine clothes",
+          "bottle of ink",
+          "ink pen",
+          "lamp",
+          "2 flasks of oil",
+          "5 sheets of paper",
+          "vial of perfume",
+          "sealing wax",
+          "soap"
+        ]
+      },
+      "explorerPack": {
+        "price": 10,
+        "contents": [
+          "backpack",
+          "bedroll",
+          "mess kit",
+          "tinderbox",
+          "10 torches",
+          "10 days rations",
+          "waterskin",
+          "50 feet of hempen rope"
+        ]
+      }
+    },
+    "classEquipment": {
+      "fighter": [
+        {
+          "choices": [
+            {
+              "a": ["chain mail"],
+              "b": ["leather armor", "longbow", "20 arrows"]
+            }
+          ]
+        },
+        {
+          "choices": [
+            {
+              "a": ["martial weapon", "shield"],
+              "b": ["2 martial weapons"]
+            }
+          ]
+        },
+        {
+          "choices": [
+            {
+              "a": ["light crossbow", "20 bolts"],
+              "b": ["2 handaxes"]
+            }
+          ]
+        },
+        {
+          "choices": [
+            {
+              "a": ["dungeoneer's pack"],
+              "b": ["explorer's pack"]
+            }
+          ]
+        }
+      ]
+    }
+  }
+  

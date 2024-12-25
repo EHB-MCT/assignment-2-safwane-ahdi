@@ -1,4 +1,4 @@
-let racesData, classesData, selectedSkills = [];
+let racesData, classesData, backgroundsData, selectedSkills = [];
 
 // Load Races
 fetch('races.json')
@@ -15,6 +15,15 @@ fetch('classes.json')
         classesData = data;
         console.log('Classes loaded:', classesData);
     });
+
+// Load Backgrounds
+fetch('backgrounds.json')
+    .then(response => response.json())
+    .then(data => {
+        backgroundsData = data;
+        console.log('Backgrounds loaded:', backgroundsData);
+    })
+    .catch(error => console.error("Error loading backgrounds:", error));
 
 
 //##########################################
@@ -91,18 +100,7 @@ window.updateSelectedSkills = function (className) {
 };
 
 
-// Generate Character (Partial Implementation)
-function generateCharacter() {
-    const selectedClass = document.getElementById("class-select").value;
 
-    const character = {
-        class: selectedClass,
-        skills: selectedSkills,
-    };
-
-    document.getElementById("character-details").textContent = JSON.stringify(character, null, 2);
-    document.getElementById("character-summary").style.display = "block";
-}
 
 document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
 
@@ -126,6 +124,15 @@ document.addEventListener("DOMContentLoaded", () => {
             populateDropdown("class-select", classes, "Class");
         })
         .catch(error => console.error("Error fetching classes:", error));
+
+        // Fetch Backgrounds and Populate Backgrounds Dropdown
+        fetch('backgrounds.json')
+    .then(response => response.json())
+    .then(data => {
+        backgroundsData = data.backgrounds;
+        populateDropdown("background-select", backgroundsData, "Background");
+    })
+    .catch(error => console.error("Error loading backgrounds:", error));
 });
 
 // Populate Dropdown Utility
@@ -158,6 +165,20 @@ function updateSubraces(races) {
         subraceSelect.disabled = true;
     }
 }
+
+document.getElementById("background-select").addEventListener("change", () => {
+    const selectedBackground = document.getElementById("background-select").value;
+    const descriptionContainer = document.getElementById("background-description");
+    const detailsContainer = document.getElementById("background-details");
+
+    if (selectedBackground && backgroundsData[selectedBackground]) {
+        descriptionContainer.style.display = "block";
+        detailsContainer.textContent = JSON.stringify(backgroundsData[selectedBackground], null, 2);
+    } else {
+        descriptionContainer.style.display = "none";
+        detailsContainer.textContent = "";
+    }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     // Fetch Classes and Populate Class Dropdown
@@ -192,3 +213,54 @@ function updateSubclassOptions(classes) {
     }
 }
 
+// Generate Character
+function generateCharacter() {
+    const raceElement = document.getElementById("race-select");
+    const classElement = document.getElementById("class-select");
+    const subclassElement = document.getElementById("subclass-select");
+    const subraceElement = document.getElementById("subrace-select");
+    const background = document.getElementById("background-select").value || "No Background";
+
+    if (!raceElement || !classElement || !subclassElement || !subraceElement) {
+        console.error("Required elements are missing in the DOM.");
+        return;
+    }
+
+    const selectedRace = raceElement.value || "Unknown Race";
+    const selectedSubrace = subraceElement.value || "Unknown Subrace";
+    const selectedClass = classElement.value || "Unknown Class";
+    const selectedSubclass = subclassElement.value || "Unknown Subclass";
+
+    // Check for ability scores
+    const abilityScores = {
+        strength: document.getElementById("strength")?.value || "8",
+        dexterity: document.getElementById("dexterity")?.value || "8",
+        constitution: document.getElementById("constitution")?.value || "8",
+        intelligence: document.getElementById("intelligence")?.value || "8",
+        wisdom: document.getElementById("wisdom")?.value || "8",
+        charisma: document.getElementById("charisma")?.value || "8",
+    };
+
+    // Build character object
+    const character = {
+        race: selectedRace,
+        subrace: selectedSubrace,
+        class: selectedClass,
+        subclass: selectedSubclass,
+        background: background,
+        abilities: abilityScores,
+        skills: selectedSkills,
+    };
+
+    // Display character
+    document.getElementById("character-details").textContent = JSON.stringify(character, null, 2);
+    document.getElementById("character-summary").style.display = "block";
+}
+
+// Attach event listener
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
+});
+
+
+document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
