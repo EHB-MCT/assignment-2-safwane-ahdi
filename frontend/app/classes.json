@@ -1,0 +1,89 @@
+{
+    "barbarian": {
+      "hitDice": "1d12 per level",
+      "primaryAbility": "Strength",
+      "savingThrows": ["Strength", "Constitution"],
+      "skills": "Choose two: Animal Handling, Athletics, Intimidation, Nature, Perception, Survival"
+    },
+    "bard": {
+      "hitDice": "1d8 per level",
+      "primaryAbility": "Charisma",
+      "savingThrows": ["Dexterity", "Charisma"],
+      "skills": "Choose any three"
+    },
+    "cleric": {
+      "hitDice": "1d8 per level",
+      "primaryAbility": "Wisdom",
+      "savingThrows": ["Wisdom", "Charisma"],
+      "skills": "Choose two: History, Insight, Medicine, Persuasion, Religion",
+      "subclasses": {
+      "life": "Life Domain",
+      "light": "Light Domain",
+      "trickery": "Trickery Domain"
+    }
+    },
+    "druid": {
+      "hitDice": "1d8 per level",
+      "primaryAbility": "Wisdom",
+      "savingThrows": ["Intelligence", "Wisdom"],
+      "skills": "Choose two: Arcana, Animal Handling, Insight, Medicine, Nature, Perception, Religion, Survival"
+    },
+    "fighter": {
+      "hitDice": "1d10 per level",
+      "primaryAbility": "Strength or Dexterity",
+      "savingThrows": ["Strength", "Constitution"],
+      "skills": "Choose two: Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, Survival"
+    },
+    "monk": {
+      "hitDice": "1d8 per level",
+      "primaryAbility": "Dexterity and Wisdom",
+      "savingThrows": ["Strength", "Dexterity"],
+      "skills": "Choose two: Acrobatics, Athletics, History, Insight, Religion, Stealth"
+    },
+    "paladin": {
+      "hitDice": "1d10 per level",
+      "primaryAbility": "Strength and Charisma",
+      "savingThrows": ["Wisdom", "Charisma"],
+      "skills": "Choose two: Athletics, Insight, Intimidation, Medicine, Persuasion, Religion"
+    },
+    "ranger": {
+      "hitDice": "1d10 per level",
+      "primaryAbility": "Dexterity and Wisdom",
+      "savingThrows": ["Strength", "Dexterity"],
+      "skills": "Choose three: Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, Survival"
+    },
+    "rogue": {
+      "hitDice": "1d8 per level",
+      "primaryAbility": "Dexterity",
+      "savingThrows": ["Dexterity", "Intelligence"],
+      "skills": "Choose four: Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, Stealth"
+    },
+    "sorcerer": {
+      "hitDice": "1d6 per level",
+      "primaryAbility": "Charisma",
+      "savingThrows": ["Constitution", "Charisma"],
+      "skills": "Choose two: Arcana, Deception, Insight, Intimidation, Persuasion, Religion",
+      "subclasses": {
+      "draconic": "Draconic Bloodline",
+      "wildMagic": "Wild Magic"
+    }
+    },
+    "warlock": {
+      "hitDice": "1d8 per level",
+      "primaryAbility": "Charisma",
+      "savingThrows": ["Wisdom", "Charisma"],
+      "skills": "Choose two: Arcana, Deception, History, Intimidation, Investigation, Nature, Religion",
+      "subclasses": {
+      "archfey": "The Archfey",
+      "fiend": "The Fiend",
+      "greatOldOne": "The Great Old One"
+    }
+    },
+    "wizard": {
+      "hitDice": "1d6 per level",
+      "primaryAbility": "Intelligence",
+      "savingThrows": ["Intelligence", "Wisdom"],
+      "skills": "Choose two: Arcana, History, Insight, Investigation, Medicine, Religion"
+    }
+  }
+  

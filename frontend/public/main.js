@@ -1,7 +1,7 @@
 import Character from 'character.js';
-import { fetchRaces, fetchClasses } from './api.js';
-import { setupStatGeneration } from './stats.js';
-import { setupSkillSelection } from './skills.js';
+import { fetchRaces, fetchClasses } from 'api.js';
+import { setupStatGeneration } from 'stats.js';
+import { setupSkillSelection } from 'skills.js';
 
 const character = new Character('', '', '', '');
 

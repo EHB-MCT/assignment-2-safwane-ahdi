@@ -88,9 +88,15 @@ export default class Character {
                 .map(() => Math.floor(Math.random() * 6) + 1)
                 .sort((a, b) => a - b);
             rolls.shift();
-            return rolls.reduce((a, b) => a + b, 0);
+            const total = rolls.reduce((a, b) => a + b, 0);
+    
+            if (total < 3 || total > 18) {
+                console.warn('Suspicious roll detected:', rolls);
+            }
+    
+            return total;
         };
-
+    
         return {
             STR: roll4d6DropLowest(),
             DEX: roll4d6DropLowest(),
@@ -100,6 +106,7 @@ export default class Character {
             CHA: roll4d6DropLowest(),
         };
     }
+    
 
     // Apply race modifiers to stats
     applyRaceModifiers() {

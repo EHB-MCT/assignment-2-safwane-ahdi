@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Character Creator</title>
+    <script type="module" src="/frontend/app/point-buy.js"></script>
+    <script type="module" src="/frontend/app/charCreator.js"></script>
+</head>
+<body>
+    <h1>D&D Character Creator</h1>
+    <div id="creator">
+        <select id="race-select">
+            <option value="">Select a Race</option>
+        </select>
+        <select id="subrace-select" disabled>
+            <option value="">Select a Subrace</option>
+        </select>
+        
+        <select id="class-select">
+            <option value="">Select a Class</option>
+        </select>
+        
+        <select id="subclass-select" disabled>
+            <option value="">Select a Subclass</option>
+        </select>        
+
+        <h2>Ability Scores</h2>
+        <div id="point-buy-system">
+            <h2>Point Buy System</h2>
+            <p>Points Remaining: <span id="points-remaining">27</span></p>
+            <div class="ability">
+                <label for="strength">Strength:</label>
+                <input type="number" id="strength" value="8" min="8" max="15" readonly>
+                <button onclick="adjustScore('strength', 1)">+</button>
+                <button onclick="adjustScore('strength', -1)">-</button>
+            </div>
+            <div class="ability">
+                <label for="dexterity">Dexterity:</label>
+                <input type="number" id="dexterity" value="8" min="8" max="15" readonly>
+                <button onclick="adjustScore('dexterity', 1)">+</button>
+                <button onclick="adjustScore('dexterity', -1)">-</button>
+            </div>
+            <div class="ability">
+                <label for="constitution">Constitution:</label>
+                <input type="number" id="constitution" value="8" min="8" max="15" readonly>
+                <button onclick="adjustScore('constitution', 1)">+</button>
+                <button onclick="adjustScore('constitution', -1)">-</button>
+            </div>
+            <div class="ability">
+                <label for="intelligence">Intelligence:</label>
+                <input type="number" id="intelligence" value="8" min="8" max="15" readonly>
+                <button onclick="adjustScore('intelligence', 1)">+</button>
+                <button onclick="adjustScore('intelligence', -1)">-</button>
+            </div>
+            <div class="ability">
+                <label for="wisdom">Wisdom:</label>
+                <input type="number" id="wisdom" value="8" min="8" max="15" readonly>
+                <button onclick="adjustScore('wisdom', 1)">+</button>
+                <button onclick="adjustScore('wisdom', -1)">-</button>
+            </div>
+            <div class="ability">
+                <label for="charisma">Charisma:</label>
+                <input type="number" id="charisma" value="8" min="8" max="15" readonly>
+                <button onclick="adjustScore('charisma', 1)">+</button>
+                <button onclick="adjustScore('charisma', -1)">-</button>
+            </div>
+        </div>
+        
+
+        <button onclick="generateCharacter()">Generate Character</button>
+    </div>
+
+    <div id="character-summary" style="display:none;">
+        <h2>Character Summary</h2>
+        <p id="character-details"></p>
+    </div>
+
+    <script>
+        const races = {
+            dwarf: {
+                traits: "Constitution +2, Darkvision, Dwarven Resilience",
+                speed: 25,
+                size: "Medium",
+            },
+            elf: {
+                traits: "Dexterity +2, Darkvision, Keen Senses, Fey Ancestry",
+                speed: 30,
+                size: "Medium",
+            },
+            human: {
+                traits: "All Ability Scores +1",
+                speed: 30,
+                size: "Medium",
+            },
+            halfling: {
+                traits: "Dexterity +2, Lucky, Brave, Halfling Nimbleness",
+                speed: 25,
+                size: "Small",
+            },
+        };
+
+        function generateCharacter() {
+            const race = document.getElementById("race-select").value;
+            const charClass = document.getElementById("class-select").value;
+            const abilities = {
+                strength: document.getElementById("strength").value,
+                dexterity: document.getElementById("dexterity").value,
+                constitution: document.getElementById("constitution").value,
+                intelligence: document.getElementById("intelligence").value,
+                wisdom: document.getElementById("wisdom").value,
+                charisma: document.getElementById("charisma").value,
+            };
+
+            const raceDetails = races[race];
+            const details = `
+                Race: ${race.charAt(0).toUpperCase() + race.slice(1)}<br>
+                Traits: ${raceDetails.traits}<br>
+                Speed: ${raceDetails.speed} feet<br>
+                Size: ${raceDetails.size}<br>
+                Class: ${charClass.charAt(0).toUpperCase() + charClass.slice(1)}<br>
+                Strength: ${abilities.strength}, Dexterity: ${abilities.dexterity}, Constitution: ${abilities.constitution},<br>
+                Intelligence: ${abilities.intelligence}, Wisdom: ${abilities.wisdom}, Charisma: ${abilities.charisma}
+            `;
+
+            document.getElementById("character-details").innerHTML = details;
+            document.getElementById("creator").style.display = "none";
+            document.getElementById("character-summary").style.display = "block";
+        }
+    </script>
+</body>
+</html>

@@ -8,10 +8,14 @@ export function setupSkillSelection(character) {
 
     document.getElementById('expertise').addEventListener('change', (e) => {
         const selectedExpertise = Array.from(e.target.selectedOptions).map(option => option.value);
-        character.expertise = selectedExpertise;
+        character.expertise = selectedExpertise.filter(skill => !character.proficiencies.includes(skill));
+        if (selectedExpertise.length !== character.expertise.length) {
+            alert('Some skills were removed from Expertise because they are already in Proficiencies.');
+        }
         character.calculateSkills();
         updateSkillModifiersUI(character);
     });
+    
 }
 
 function updateSkillModifiersUI(character) {

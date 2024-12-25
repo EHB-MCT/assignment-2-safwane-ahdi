@@ -1,0 +1,83 @@
+{
+    "dwarf": {
+      "traits": "Constitution +2, Darkvision, Dwarven Resilience, Dwarven Combat Training, Tool Proficiency, Stonecunning",
+      "speed": 25,
+      "size": "Medium",
+      "subraces": {
+        "hillDwarf": {
+          "traits": "Wisdom +1, Dwarven Toughness"
+        },
+        "mountainDwarf": {
+          "traits": "Strength +2, Dwarven Armor Training"
+        }
+      }
+    },
+    "elf": {
+      "traits": "Dexterity +2, Darkvision, Keen Senses, Fey Ancestry, Trance",
+      "speed": 30,
+      "size": "Medium",
+      "subraces": {
+        "highElf": {
+          "traits": "Intelligence +1, Elf Weapon Training, Cantrip, Extra Language"
+        },
+        "woodElf": {
+          "traits": "Wisdom +1, Elf Weapon Training, Fleet of Foot, Mask of the Wild"
+        },
+        "drow": {
+          "traits": "Charisma +1, Superior Darkvision, Sunlight Sensitivity, Drow Magic, Drow Weapon Training"
+        }
+      }
+    },
+    "human": {
+      "traits": "All Ability Scores +1",
+      "speed": 30,
+      "size": "Medium"
+    },
+    "halfling": {
+      "traits": "Dexterity +2, Lucky, Brave, Halfling Nimbleness",
+      "speed": 25,
+      "size": "Small",
+      "subraces": {
+        "lightfoot": {
+          "traits": "Charisma +1, Naturally Stealthy"
+        },
+        "stout": {
+          "traits": "Constitution +1, Stout Resilience"
+        }
+      }
+    },
+    "dragonborn": {
+      "traits": "Strength +2, Charisma +1, Draconic Ancestry, Breath Weapon, Damage Resistance",
+      "speed": 30,
+      "size": "Medium"
+    },
+    "gnome": {
+      "traits": "Intelligence +2, Darkvision, Gnome Cunning",
+      "speed": 25,
+      "size": "Small",
+      "subraces": {
+        "forestGnome": {
+          "traits": "Dexterity +1, Natural Illusionist, Speak with Small Beasts"
+        },
+        "rockGnome": {
+          "traits": "Constitution +1, Artificer’s Lore, Tinker"
+        }
+      }
+    },
+    "halfElf": {
+      "traits": "Charisma +2, Two Ability Scores of Your Choice +1, Darkvision, Fey Ancestry, Skill Versatility",
+      "speed": 30,
+      "size": "Medium"
+    },
+    "halfOrc": {
+      "traits": "Strength +2, Constitution +1, Darkvision, Menacing, Relentless Endurance, Savage Attacks",
+      "speed": 30,
+      "size": "Medium"
+    },
+    "tiefling": {
+      "traits": "Charisma +2, Intelligence +1, Darkvision, Hellish Resistance, Infernal Legacy",
+      "speed": 30,
+      "size": "Medium"
+    }
+  }
+  

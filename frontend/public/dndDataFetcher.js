@@ -18,11 +18,14 @@ function addOption(dropdownId, value, text) {
     dropdown.appendChild(option);
 }
 
-function populateOptions(dropdownId, options) {
-    clearDropdown(dropdownId);
-    options.forEach(option => {
-        addOption(dropdownId, option.index, option.name);
-    });
+function resetDependentDropdowns(...dropdownIds) {
+    dropdownIds.forEach(clearDropdown);
+}
+
+function populateDropdown(dropdownId, options, defaultText = "Select an option") {
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.innerHTML = `<option value="">${defaultText}</option>`;
+    options.forEach(option => addOption(dropdownId, option.index, option.name));
 }
 
 // Populate All Dropdowns
@@ -35,9 +38,10 @@ async function populateDropdowns() {
             fetch('backgrounds.json').then(res => res.json())
         ]);
 
-        populateOptions('race', races.results);
-        populateOptions('class', classes.results);
-        populateOptions('subclass', subclasses.results);
+        populateDropdown('race', races.results);
+        populateDropdown('class', classes.results);
+        populateDropdown('subclass', subclasses.results);
+
 
         clearDropdown('background');
         backgrounds.forEach(background => {
@@ -54,12 +58,13 @@ function updateRaceOptions() {
     if (raceDropdown) {
         raceDropdown.addEventListener('change', async () => {
             const race = raceDropdown.value;
+            clearDropdown('languages');
+            clearDropdown('subclass'); // Reset dependent dropdown
             if (!race) return;
 
             try {
                 const response = await fetch(`${API_BASE_URL}/races/${race}`);
                 const data = await response.json();
-                clearDropdown('languages');
                 data.languages.forEach(language => {
                     addOption('languages', language.index, language.name);
                 });
@@ -72,6 +77,7 @@ function updateRaceOptions() {
         });
     }
 }
+
 
 // Update Class Options
 function updateClassOptions() {
@@ -104,10 +110,43 @@ function updateClassOptions() {
 
                 character.class = selectedClass; // Update character's class
                 character.updateDerivedStats(); // Recalculate stats
+
+                updateSkills(); // Update skills dynamically
             } catch (error) {
                 console.error('Error fetching class data:', error);
             }
         });
+    }
+}
+
+function updateSkills() {
+    const skillsDropdown = document.getElementById('skills');
+    if (!skillsDropdown) {
+        console.error('Skills dropdown element not found.');
+        return;
+    }
+    clearDropdown('skills');
+
+    const classDropdown = document.getElementById('class');
+    const selectedClass = classDropdown.value;
+
+    if (selectedClass) {
+        fetch(`${API_BASE_URL}/classes/${selectedClass}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.proficiency_choices && data.proficiency_choices.length > 0) {
+                    const from = Array.isArray(data.proficiency_choices[0].from)
+                        ? data.proficiency_choices[0].from
+                        : [];
+                    from.forEach(skill => {
+                        addOption('skills', skill.index, skill.name);
+                    });
+                    skillsDropdown.setAttribute('data-max-selectable', data.proficiency_choices[0].choose);
+                } else {
+                    console.warn('No proficiency choices available for this class.');
+                }
+            })
+            .catch(error => console.error('Error fetching class skills:', error));
     }
 }
 

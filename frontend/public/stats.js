@@ -18,7 +18,12 @@ export function setupStatGeneration(character) {
             WIS: parseInt(document.getElementById('wis').value),
             CHA: parseInt(document.getElementById('cha').value),
         };
-
+    
+        if (Object.values(stats).some(stat => stat < 8 || stat > 15)) {
+            alert('Each stat must be between 8 and 15.');
+            return;
+        }
+    
         const pointTotal = Object.values(stats).reduce((a, b) => a + b - 8, 0);
         if (pointTotal > 27) {
             alert('You have exceeded 27 points!');
@@ -28,6 +33,7 @@ export function setupStatGeneration(character) {
             alert('Point Buy applied successfully!');
         }
     });
+    
 
     document.getElementById('roll-dice-btn').addEventListener('click', () => {
         const stats = character.rollStats();
