@@ -1,37 +1,65 @@
 let racesData, classesData, backgroundsData, selectedSkills = [];
 
-// Load Races
-fetch('races.json')
-    .then(response => response.json())
-    .then(data => {
-        racesData = data;
-        console.log('Races loaded:', racesData);
+document.addEventListener("DOMContentLoaded", () => {
+    const abilityScoreMethodSelect = document.getElementById("abilityScoreMethod");
+    const pointBuySystem = document.getElementById("point-buy-system");
+    const diceRollSystem = document.getElementById("dice-roll-system");
+    const standardArraySystem = document.getElementById("standard-array-system");
+
+    abilityScoreMethodSelect.addEventListener("change", (event) => {
+        const selectedMethod = event.target.value;
+
+        pointBuySystem.hidden = true;
+        diceRollSystem.hidden = true;
+        standardArraySystem.hidden = true;
+
+        switch (selectedMethod) {
+            case "pointBuy":
+                pointBuySystem.hidden = false;
+                break;
+            case "diceRoll":
+                diceRollSystem.hidden = false;
+                break;
+            case "standardArray":
+                standardArraySystem.hidden = false;
+                break;
+        }
     });
 
-// Load Classes
-fetch('classes.json')
-    .then(response => response.json())
-    .then(data => {
-        classesData = data;
-        console.log('Classes loaded:', classesData);
-    });
+    fetch("races.json")
+        .then(response => response.json())
+        .then(races => {
+            console.log("Races loaded:", races);
+            populateDropdown("race-select", races, "Race");
+            document.getElementById("race-select").addEventListener("change", () => {
+                updateSubraces(races);
+            });
+        })
+        .catch(error => console.error("Error fetching races:", error));
 
-// Load Backgrounds
-fetch('backgrounds.json')
-    .then(response => response.json())
-    .then(data => {
-        backgroundsData = data;
-        console.log('Backgrounds loaded:', backgroundsData);
-    })
-    .catch(error => console.error("Error loading backgrounds:", error));
+    fetch("classes.json")
+        .then(response => response.json())
+        .then(classes => {
+            console.log("Classes loaded:", classes);
+            populateDropdown("class-select", classes, "Class");
+            document.getElementById("class-select").addEventListener("change", () => {
+                updateSubclassOptions(classes);
+            });
+        })
+        .catch(error => console.error("Error fetching classes:", error));
 
+    fetch("backgrounds.json")
+        .then(response => response.json())
+        .then(data => {
+            console.log("Backgrounds loaded:", data);
+            const backgroundsData = data.backgrounds;
+            populateDropdown("background-select", backgroundsData, "Background");
+        })
+        .catch(error => console.error("Error loading backgrounds:", error));
 
-//##########################################
-//##########################################
-//##########################################
-//##########################################
+    document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
+});
 
-// Update Skills Dropdown Based on Selected Class
 document.getElementById("class-select").addEventListener("change", () => {
     const selectedClass = document.getElementById("class-select").value;
     if (selectedClass) {
@@ -41,7 +69,6 @@ document.getElementById("class-select").addEventListener("change", () => {
     }
 });
 
-// Populate Skills Based on Selected Class
 function populateSkills(className) {
     const classData = classesData[className];
     const skillContainer = document.getElementById("skills-container");
@@ -61,7 +88,6 @@ function populateSkills(className) {
     }
 }
 
-// Update Selected Skills
 function updateSelectedSkills(className) {
     const classData = classesData[className];
     const checkboxes = document.querySelectorAll("#skills-container input[type='checkbox']");
@@ -80,7 +106,6 @@ function updateSelectedSkills(className) {
     }
 }
 
-// Attach updateSelectedSkills to the global window object
 window.updateSelectedSkills = function (className) {
     const classData = classesData[className];
     const checkboxes = document.querySelectorAll("#skills-container input[type='checkbox']");
@@ -99,43 +124,6 @@ window.updateSelectedSkills = function (className) {
     }
 };
 
-
-
-
-document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    // Fetch Races and Populate Race Dropdown
-    fetch("races.json")
-        .then(response => response.json())
-        .then(races => {
-            populateDropdown("race-select", races, "Race");
-            document.getElementById("race-select").addEventListener("change", () => {
-                updateSubraces(races);
-            });
-        })
-        .catch(error => console.error("Error fetching races:", error));
-
-    // Fetch Classes and Populate Class Dropdown
-    fetch("classes.json")
-        .then(response => response.json())
-        .then(classes => {
-            populateDropdown("class-select", classes, "Class");
-        })
-        .catch(error => console.error("Error fetching classes:", error));
-
-        // Fetch Backgrounds and Populate Backgrounds Dropdown
-        fetch('backgrounds.json')
-    .then(response => response.json())
-    .then(data => {
-        backgroundsData = data.backgrounds;
-        populateDropdown("background-select", backgroundsData, "Background");
-    })
-    .catch(error => console.error("Error loading backgrounds:", error));
-});
-
-// Populate Dropdown Utility
 function populateDropdown(selectId, data, type) {
     const selectElement = document.getElementById(selectId);
     for (const key in data) {
@@ -146,7 +134,6 @@ function populateDropdown(selectId, data, type) {
     }
 }
 
-// Update Subraces Dropdown Based on Selected Race
 function updateSubraces(races) {
     const race = document.getElementById("race-select").value;
     const subraceSelect = document.getElementById("subrace-select");
@@ -180,20 +167,6 @@ document.getElementById("background-select").addEventListener("change", () => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Fetch Classes and Populate Class Dropdown
-    fetch("classes.json")
-        .then(response => response.json())
-        .then(classes => {
-            populateDropdown("class-select", classes, "Class");
-            document.getElementById("class-select").addEventListener("change", () => {
-                updateSubclassOptions(classes);
-            });
-        })
-        .catch(error => console.error("Error fetching classes:", error));
-});
-
-// Update Subclass Options for Level 1 Classes
 function updateSubclassOptions(classes) {
     const selectedClass = document.getElementById("class-select").value;
     const subclassSelect = document.getElementById("subclass-select");
@@ -213,13 +186,13 @@ function updateSubclassOptions(classes) {
     }
 }
 
-// Generate Character
 function generateCharacter() {
     const raceElement = document.getElementById("race-select");
     const classElement = document.getElementById("class-select");
     const subclassElement = document.getElementById("subclass-select");
     const subraceElement = document.getElementById("subrace-select");
     const background = document.getElementById("background-select").value || "No Background";
+    const abilityScoreMethod = document.getElementById("abilityScoreMethod").value;
 
     if (!raceElement || !classElement || !subclassElement || !subraceElement) {
         console.error("Required elements are missing in the DOM.");
@@ -231,17 +204,22 @@ function generateCharacter() {
     const selectedClass = classElement.value || "Unknown Class";
     const selectedSubclass = subclassElement.value || "Unknown Subclass";
 
-    // Check for ability scores
-    const abilityScores = {
-        strength: document.getElementById("strength")?.value || "8",
-        dexterity: document.getElementById("dexterity")?.value || "8",
-        constitution: document.getElementById("constitution")?.value || "8",
-        intelligence: document.getElementById("intelligence")?.value || "8",
-        wisdom: document.getElementById("wisdom")?.value || "8",
-        charisma: document.getElementById("charisma")?.value || "8",
-    };
+    let abilityScores = {};
+    switch (abilityScoreMethod) {
+        case "pointBuy":
+            abilityScores = getPointBuyScores();
+            break;
+        case "diceRoll":
+            abilityScores = getDiceRollScores();
+            break;
+        case "standardArray":
+            abilityScores = getStandardArrayScores();
+            break;
+        default:
+            console.error("Invalid ability score method selected.");
+            return;
+    }
 
-    // Build character object
     const character = {
         race: selectedRace,
         subrace: selectedSubrace,
@@ -252,15 +230,49 @@ function generateCharacter() {
         skills: selectedSkills,
     };
 
-    // Display character
     document.getElementById("character-details").textContent = JSON.stringify(character, null, 2);
     document.getElementById("character-summary").style.display = "block";
 }
 
-// Attach event listener
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
-});
+function getPointBuyScores() {
+    return {
+        strength: parseInt(document.getElementById("strength").value, 10),
+        dexterity: parseInt(document.getElementById("dexterity").value, 10),
+        constitution: parseInt(document.getElementById("constitution").value, 10),
+        intelligence: parseInt(document.getElementById("intelligence").value, 10),
+        wisdom: parseInt(document.getElementById("wisdom").value, 10),
+        charisma: parseInt(document.getElementById("charisma").value, 10),
+    };
+}
 
+function getDiceRollScores() {
+    return {
+        strength: roll4d6DropLowest(),
+        dexterity: roll4d6DropLowest(),
+        constitution: roll4d6DropLowest(),
+        intelligence: roll4d6DropLowest(),
+        wisdom: roll4d6DropLowest(),
+        charisma: roll4d6DropLowest(),
+    };
+}
+
+function getStandardArrayScores() {
+    const standardArray = [15, 14, 13, 12, 10, 8];
+    const scores = {};
+    const abilities = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"];
+
+    abilities.forEach((ability, index) => {
+        scores[ability] = standardArray[index];
+    });
+
+    return scores;
+}
+
+function roll4d6DropLowest() {
+    const rolls = Array.from({ length: 4 }, () => Math.floor(Math.random() * 6) + 1);
+    rolls.sort((a, b) => a - b); 
+    rolls.shift();
+    return rolls.reduce((sum, roll) => sum + roll, 0); 
+}
 
 document.getElementById("generate-character-button").addEventListener("click", generateCharacter);

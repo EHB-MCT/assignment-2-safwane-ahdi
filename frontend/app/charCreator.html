@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Character Creator</title>
     <script type="module" src="/frontend/app/point-buy.js"></script>
+    <script type="module" src="/frontend/app/dice-roll.js"></script>
     <script type="module" src="/frontend/app/charCreator.js"></script>
 </head>
 <body>
@@ -34,7 +35,15 @@
         </div>        
         
         <h2>Ability Scores</h2>
-        <div id="point-buy-system">
+
+        <label for="abilityScoreMethod">Choose Ability Score Generation Method:</label>
+        <select id="abilityScoreMethod" name="abilityScoreMethod">
+            <option value="pointBuy">Point Buy</option>
+            <option value="standardArray">Standard Array</option>
+            <option value="diceRoll">Dice Roll</option>
+        </select>
+
+        <div id="point-buy-system" hidden>
             <h2>Point Buy System</h2>
             <p>Points Remaining: <span id="points-remaining">27</span></p>
             <div class="ability">
@@ -73,6 +82,24 @@
                 <button onclick="adjustScore('charisma', 1)">+</button>
                 <button onclick="adjustScore('charisma', -1)">-</button>
             </div>
+        </div>
+
+        <div id="dice-roll-system" hidden>
+            <h2>Dice Roll System</h2>
+            <p>Roll 4d6 and drop the lowest
+        </div>
+
+        <div id="standard-array-system" hidden>
+            <h2>Standard Array System</h2>
+            <p>Use the following array of scores:
+            <ul>
+                <li>Strength: 15</li>
+                <li>Dexterity: 14</li>
+                <li>Constitution: 13</li>
+                <li>Intelligence: 12</li>
+                <li>Wisdom: 10</li>
+                <li>Charisma: 8</li>
+            </ul>
         </div>
 
         <div id="skills-selection">
