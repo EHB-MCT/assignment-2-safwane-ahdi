@@ -37,26 +37,27 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error("Error fetching races:", error));
 
-    fetch("classes.json")
+        fetch("classes.json")
         .then(response => response.json())
         .then(classes => {
             console.log("Classes loaded:", classes);
+            classesData = classes;
             populateDropdown("class-select", classes, "Class");
             document.getElementById("class-select").addEventListener("change", () => {
                 updateSubclassOptions(classes);
             });
         })
         .catch(error => console.error("Error fetching classes:", error));
+    
 
-    fetch("backgrounds.json")
+        fetch("backgrounds.json")
         .then(response => response.json())
         .then(data => {
             console.log("Backgrounds loaded:", data);
-            const backgroundsData = data.backgrounds;
+            backgroundsData = data.backgrounds; // Use global variable
             populateDropdown("background-select", backgroundsData, "Background");
         })
         .catch(error => console.error("Error loading backgrounds:", error));
-
     document.getElementById("generate-character-button").addEventListener("click", generateCharacter);
 });
 
@@ -229,6 +230,23 @@ function generateCharacter() {
         abilities: abilityScores,
         skills: selectedSkills,
     };
+
+    document.getElementById("template-race").textContent = character.race;
+    document.getElementById("template-subrace").textContent = character.subrace;
+    document.getElementById("template-class").textContent = character.class;
+    document.getElementById("template-subclass").textContent = character.subclass;
+    document.getElementById("template-background").textContent = character.background;
+    document.getElementById("template-strength").textContent = character.abilities.strength || "--";
+    document.getElementById("template-dexterity").textContent = character.abilities.dexterity || "--";
+    document.getElementById("template-constitution").textContent = character.abilities.constitution || "--";
+    document.getElementById("template-intelligence").textContent = character.abilities.intelligence || "--";
+    document.getElementById("template-wisdom").textContent = character.abilities.wisdom || "--";
+    document.getElementById("template-charisma").textContent = character.abilities.charisma || "--";
+    document.getElementById("template-skills").textContent =
+        character.skills.length > 0 ? character.skills.join(", ") : "None Selected";
+
+    // Display the summary
+    document.getElementById("character-template").style.display = "block";
 
     document.getElementById("character-details").textContent = JSON.stringify(character, null, 2);
     document.getElementById("character-summary").style.display = "block";
